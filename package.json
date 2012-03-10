@@ -1,0 +1,45 @@
+{
+  "author": "GlitchMr <glitchmr@myopera.com> (http://glitchmr.pl/)",
+  "name": "sprint",
+  "description": "C/C++/PHP/Perl/Ruby/... sprintf() function with nearly everything (padding)!",
+  "version": "v0.1.0",
+  "homepage": "https://github.com/GlitchMr/sprint",
+  "keywords": [
+    "sprintf",
+    "format",
+    "snprintf",
+    "printf",
+    "fprintf",
+    "vprintf",
+    "vfprintf",
+    "vsprintf",
+    "vsnprintf",
+    "vasprintf",
+    "print",
+    "echo"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/GlitchMr/YIBot.git"
+  },
+  "main": "./lib/sprint",
+  "directories": {
+    "lib": "./lib"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/GlitchMr/sprint/raw/master/LICENSE"
+    }
+  ],
+  "bugs": "https://github.com/GlitchMr/sprint/issues",
+  "scripts": {
+    "test": "node test/sprint"
+  }
+}
