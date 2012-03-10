@@ -31,6 +31,8 @@
 
   test('%%%%', '%%', '%% should be changed to %');
 
+  test('%s %s', ['a', 'b'], 'Array with sprint()');
+
   test('%d', 404, '404', '%d format');
 
   test('%2$d %1$d', 1, 2, '2 1', 'Numbered parameters');
