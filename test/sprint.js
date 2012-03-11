@@ -18,16 +18,18 @@
       console.log("Got:      " + (sprint.apply(null, args)));
       throw e;
     }
-    return console.log(sprint('%3s: OK %s', ++i, message));
+    return console.log(sprint('%04.3d: OK %s', ++i, message));
   };
 
   test('Message', 'Message', 'sprintf() without arguments');
 
-  test('%$s', '%$s', 'Invalid % values should be ignored by RegExp');
+  test('%$s %6. 6s %6.6 s', '%$s %6. 6s %6.6 s', 'Invalid % values should be ignored by RegExp');
 
   test('%s', '%s', '%s', '%s as value shouldn\'t be affected by sprintf()');
 
   test('%s', '', 'Not found values should be replaced with nothing.');
+
+  test('%.2s', 'string', 'st', 'String precision');
 
   test('%%%%', '%%', '%% should be changed to %');
 
@@ -45,6 +47,14 @@
 
   test('%+ d % +d', 2, 3.14, '+2 +3', '<% > and %+ modifier at once.');
 
+  test('%d', 123456.789, '123456', "%d format shouldn't round");
+
+  test('%d', -0, '0', "%d shouldn't represent negative 0");
+
+  test('%-03.2d', 1, '01 ', 'Left align + length + precision');
+
+  test('%+.*d', 0, 0, '+', '+ with 0');
+
   test('%i', 3.14, '3', '%i alias for %d format');
 
   test('%5s', 'test', ' test', 'Padding');
@@ -55,9 +65,11 @@
 
   test('%05d', 1234, '01234', 'Padding using "0" characters');
 
-  test('%-05d', 1234, '12340', 'Padding left using "0" characters');
+  test('%-05d', 1234, '1234 ', 'Padding left using "0" characters');
 
-  test('%*.*f', 6, 1, 12.34, '  12.3', 'Star (*) operator in padding.');
+  test('%*.*f', 6, 1, 12.34, '  12.3', 'Star (*) operator');
+
+  test('%3$0*1$.*2$f', 8, 2, 3.123, '00003.12', 'Star (*) operator with argument number');
 
   test('%3s', 'test', 'test', 'Length smaller than string');
 
@@ -67,11 +79,15 @@
 
   test('%f', 3.14, '3.140000', 'Floats');
 
+  test('%.0f', 0, '0', 'Floats and 0');
+
+  test('%.0f', Math.pow(2, 38), '274877906944', 'Very big floats');
+
   test('%.1f', 3.14, '3.1', 'Accuracy');
 
   test('%.1f', 3.16, '3.2', 'Rounding');
 
-  test('%4.1f', 4.123, ' 4.1', 'Width and accuracy together');
+  test('%4.1f %.0f %.0f', 4.123, 0.6, -0.6, ' 4.1 1 -1', 'Width and accuracy together');
 
   test('%#.0f %.0f', 4.1, 4.1, '4. 4', 'Force floating dot');
 
@@ -89,6 +105,8 @@
 
   test('%#e', NaN, 'nan', 'NaN constant in exponential notation.');
 
+  test('%e', 0.1234567E-101, '1.234567e-102', 'Very small numbers.');
+
   test('%g %g', 3, 3.14, '3 3.14', '%g format');
 
   test('%g %.1g', 0.0000001, 10, '1e-007 1e+001', '%g modifier with exponential notation');
@@ -96,6 +114,10 @@
   test('%g %g', NaN, Infinity, 'nan infinity', 'NaN and Infinity with %g modifier.');
 
   test('%#.1g %#g', 3.01, 3, '3. 3.', '%g with force floating dot');
+
+  test('%g', 0, '0', 'Positive 0');
+
+  test('%g', -0, '-0', 'Negative 0');
 
   test('%G %G', NaN, Infinity, 'NAN INFINITY', 'Uppercase NaN and Infinity');
 
@@ -105,16 +127,50 @@
 
   test('%#x %#X', 0xABCD, 0xDEF004242, '0xabcd 0XDEF004242', 'Hexadecimal numbers with prefixes');
 
+  test('%0#6.3x', 18, ' 0x012', 'Precision + prefix with 0');
+
+  test('%.3X', 11, '00B', 'Hex 0-padded');
+
   test('%o %O', 0755, 0312, '755 312', 'Octal numbers');
 
   test('%#o %#O', 0123, 012345671234567, '0123 012345671234567', 'Octal numbers with prefixes');
+
+  test('%4o %4.3o', 18, 18, '  22  022', 'Octal precision');
 
   test('%b %B', 255, 256, '11111111 100000000', 'Binary numbers');
 
   test('%#b %#B', 12, 18, '0b1100 0B10010', 'Binary numbers with prefixes');
 
+  test('%06.5b', 12, ' 01100', '0 flag with precision should round to precision.');
+
+  test('%.5b', 12, '01100', 'Binary numbers with precision bigger than length');
+
+  test('%.0b %+.0b % .0b %-.0b', 0, 0, 0, 0, ' +   ', '0 with 0 precision');
+
+  test('%#3.0b %#3.4b', 1, 1, '0b1 0b0001', 'Precision and prefix at once.');
+
   test('%c', 0x21, '!', '%c format');
 
   test('%c', "\x00", '%c format without argument');
+
+  test('%1$3c %1$03c', 65, '  A 00A', '%c format with width specified');
+
+  test('%vd %vd', "AB\u0100", "\x01\x02\x03", '65.66.256 1.2.3', 'Vector flag');
+
+  test('%*vX', ':', "\x42\x42", '42:42', 'Custom separator character');
+
+  test('%2$*1$vd', ':', "\x7F\x00\x00\x01", '127:0:0:1', 'Vector flag with custom separator on specified position');
+
+  test('%#v.8b', "\x61\x00\x62", '0b01100001.00000000.0b01100010', 'Binary vectors');
+
+  test('%v.0o', "\x01\x00\x02\x00", '1..2.', 'Octal vectors');
+
+  test('%#v.0o', "\x01\x00\x02\x00", '01.0.02.0', 'Octal vectors with prefix');
+
+  test('%vs', 'Hello', '72.101.108.108.111', 'Octal strings');
+
+  test('%vc', 'Hello', 'H.e.l.l.o', 'Octal characters');
+
+  test('%*2147483647$v2d', '', '', 'Invalid octal parameter');
 
 }).call(this);
