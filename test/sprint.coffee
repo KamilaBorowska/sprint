@@ -21,7 +21,7 @@ test '%s', '',
      'Not found values should be replaced with nothing.'
 test '%%%%', '%%',
      '%% should be changed to %'
-test '%s %s', ['a', 'b'],
+test '%s %s', ['a', 'b'], 'a b',
      'Array with sprint()'
 test '%d', 404, '404',
      '%d format'
@@ -33,6 +33,8 @@ test '%+d %+d', 1, -2, '+1 -2',
      '%+ modifier'
 test '<% d> % d', 3, -4, '< 3> -4',
      '<% > modifier (space)'
+test '%+ d % +d', 2, 3.14, '+2 +3',
+     '<% > and %+ modifier at once.'
 test '%i', 3.14, '3',
      '%i alias for %d format'
 test '%5s', 'test', ' test',

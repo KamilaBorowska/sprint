@@ -2,7 +2,7 @@
   "author": "GlitchMr <glitchmr@myopera.com> (http://glitchmr.pl/)",
   "name": "sprint",
   "description": "C/C++/PHP/Perl/Ruby/... sprintf() function with nearly everything (padding)!",
-  "version": "v0.1.0",
+  "version": "v0.1.1",
   "homepage": "https://github.com/GlitchMr/sprint",
   "keywords": [
     "sprintf",
@@ -20,7 +20,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/GlitchMr/YIBot.git"
+    "url": "git://github.com/GlitchMr/sprint.git"
   },
   "main": "./lib/sprint",
   "directories": {
