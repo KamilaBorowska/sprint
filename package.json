@@ -2,7 +2,7 @@
   "author": "GlitchMr <glitchmr@myopera.com> (http://glitchmr.pl/)",
   "name": "sprint",
   "description": "C/C++/PHP/Perl/Ruby/... sprintf() function with nearly everything (padding)!",
-  "version": "v0.2.0",
+  "version": "v0.2.1",
   "homepage": "https://github.com/GlitchMr/sprint",
   "keywords": [
     "sprintf",

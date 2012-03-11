@@ -1,7 +1,10 @@
-global = if exports? then exports else this
+global = exports ? this
 
 global.sprint = (string, values...) ->
   arrayObjects = ['[object Array]', '[object Arguments]']
+
+  # IE doesn't understand toString()
+  toString = Object.prototype.toString
 
   # Detect values sent as array
   if toString.call(values[0]) in arrayObjects and values.length is 1
