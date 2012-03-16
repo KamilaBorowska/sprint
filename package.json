@@ -2,7 +2,7 @@
   "author": "GlitchMr <glitchmr@myopera.com> (http://glitchmr.pl/)",
   "name": "sprint",
   "description": "Complex sprintf() implementation",
-  "version": "v0.2.2",
+  "version": "v0.2.3",
   "homepage": "https://github.com/GlitchMr/sprint",
   "keywords": [
     "sprintf",

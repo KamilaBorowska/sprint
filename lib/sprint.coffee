@@ -1,6 +1,4 @@
-global = exports ? this
-
-global.sprint = (string, values...) ->
+sprint = (string, values...) ->
   arrayObjects = ['[object Array]', '[object Arguments]']
 
   # IE doesn't understand toString()
@@ -47,7 +45,7 @@ global.sprint = (string, values...) ->
     else
       "#{new Array(length - string.length + 1).join joiner}#{string}"
 
-  string.replace format, (string, matches...) ->
+  "#{string}".replace format, (string, matches...) ->
     [argument, flags, vector, length, precision, type] = matches
 
     return '%' if string is '%%'
@@ -79,7 +77,7 @@ global.sprint = (string, values...) ->
     if vector
       character = if vector[0] is '*'
         if vector.length > 2
-          values[parseInt(vector[1..]) - 1]
+          values[parseInt(vector[1..], 10) - 1]
         else
           values[++i]
       else
@@ -99,7 +97,7 @@ global.sprint = (string, values...) ->
       if precision.length is 1
         values[++i]
       else
-        values[parseInt(precision[1..]) - 1]
+        values[parseInt(precision[1..], 10) - 1]
     else if not precision
       defaultPrecision = yes
       6
@@ -126,8 +124,10 @@ global.sprint = (string, values...) ->
 
     result = for argument in arguments
       argument = switch type
-        when 'd', 'i', 'u', 'D', 'U'
+        when 'd', 'i', 'D'
           padInteger parseInt argument, 10
+        when 'u', 'U'
+          padInteger parseInt(argument, 10) & 0x7FFFFFFF
         when 'f', 'F'
           argument = (+argument).toFixed(precision).toLowerCase()
           # Dot shouldn't be added if argument is NaN or Infinity
@@ -176,3 +176,10 @@ global.sprint = (string, values...) ->
 
       padString argument, length, alignCharacter, leftPad
     result.join character
+
+# If it is Node, make alias of `require('sprint')('format')
+if module.exports?
+  module.exports = sprint
+
+(module?.exports ? this).sprint = sprint
+
