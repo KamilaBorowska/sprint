@@ -1,8 +1,8 @@
 {
   "author": "GlitchMr <glitchmr@myopera.com> (http://glitchmr.pl/)",
   "name": "sprint",
-  "description": "C/C++/PHP/Perl/Ruby/... sprintf() function with nearly everything (padding)!",
-  "version": "v0.2.1",
+  "description": "Complex sprintf() implementation",
+  "version": "v0.2.2",
   "homepage": "https://github.com/GlitchMr/sprint",
   "keywords": [
     "sprintf",
@@ -38,7 +38,9 @@
       "url": "http://github.com/GlitchMr/sprint/raw/master/LICENSE"
     }
   ],
-  "bugs": "https://github.com/GlitchMr/sprint/issues",
+  "bugs": {
+    "url": "https://github.com/GlitchMr/sprint/issues"
+  },
   "scripts": {
     "test": "node test/sprint"
   }
