@@ -178,7 +178,7 @@ sprint = (string, values...) ->
     result.join character
 
 # If it is Node, make alias of `require('sprint')('format')
-if module.exports?
+if module?.exports?
   module.exports = sprint
 
 (module?.exports ? this).sprint = sprint
