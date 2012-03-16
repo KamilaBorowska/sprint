@@ -57,7 +57,7 @@
 
   test('%+.*d', 0, 0, '+', '+ with 0');
 
-  test('%u %u', 3, -3, '3 2147483645', '%u should be unsigned');
+  test('%u %u', 3, -3, '3 4294967295', '%u should be unsigned');
 
   test('%i', 3.14, '3', '%i alias for %d format');
 

@@ -127,7 +127,7 @@ sprint = (string, values...) ->
         when 'd', 'i', 'D'
           padInteger parseInt argument, 10
         when 'u', 'U'
-          padInteger parseInt(argument, 10) & 0x7FFFFFFF
+          padInteger(parseInt argument, 10) >>> 0
         when 'f', 'F'
           argument = (+argument).toFixed(precision).toLowerCase()
           # Dot shouldn't be added if argument is NaN or Infinity

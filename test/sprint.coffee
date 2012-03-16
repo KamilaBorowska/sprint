@@ -47,7 +47,7 @@ test '%-03.2d', 1, '01 ',
      'Left align + length + precision'
 test '%+.*d', 0, 0, '+',
      '+ with 0'
-test '%u %u', 3, -3, '3 2147483645',
+test '%u %u', 3, -3, '3 4294967293',
      '%u should be unsigned'
 test '%i', 3.14, '3',
      '%i alias for %d format'
