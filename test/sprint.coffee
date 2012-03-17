@@ -49,6 +49,8 @@ test '%+.*d', 0, 0, '+',
      '+ with 0'
 test '%u %u', 3, -3, '3 4294967293',
      '%u should be unsigned'
+test '%03.2u', 1, ' 01',
+     '%u modifier with width and precision'
 test '%i', 3.14, '3',
      '%i alias for %d format'
 test '%5s', 'test', ' test',
@@ -59,7 +61,7 @@ test '%5d', 1234, ' 1234',
      'Padding numbers'
 test '%05d', 1234, '01234',
      'Padding using "0" characters'
-test '%-05d', 1234, '1234 ',
+test '%-05d %-05s', 1234, 'abc', '1234  abc  ',
      'Padding left using "0" characters'
 test '%*.*f', 6, 1, 12.34, '  12.3',
      'Star (*) operator'
@@ -69,8 +71,8 @@ test '%3s', 'test', 'test',
      'Length smaller than string'
 test '%4s', 'test', 'test',
      'Length equal to string length'
-test '%I64d', 42, '42',
-     'Type argument should be ignored'
+test '%I32d %hhd %hhd %hhd', [42, 257, 128, 129], '42 1 -128 -127',
+     'Type argument'
 test '%f', 3.14, '3.140000',
      'Floats'
 test '%.0f', 0, '0',
@@ -125,12 +127,14 @@ test '%0#6.3x', 18, ' 0x012',
      'Precision + prefix with 0'
 test '%.3X', 11, '00B',
      'Hex 0-padded'
+test '%X', -1, 'FFFFFFFF',
+     'Negative numbers'
 # Octal is intentionally used in those two tests
 test '%o %O', 0755, 0312, '755 312',
      'Octal numbers'
 test '%#o %#O', 0123, 012345671234567, '0123 012345671234567',
      'Octal numbers with prefixes'
-test '%4o %4.3o', 18, 18, '  22  022',
+test '%4o %4.3o', 022, 022, '  22  022',
      'Octal precision'
 # End of intentional octal numbers
 test '%b %B', 255, 256, '11111111 100000000',

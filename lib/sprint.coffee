@@ -1,3 +1,44 @@
+# This allows the compiler to precompile format RegExp without doing that
+# every time it is used.
+format = ///
+  %
+  # Argument number
+  (\d+[$])?
+  # Flags
+  ((?:[+\x20\-#0])*)
+  # Vector flag
+  ((?: [*] (?: \d+ [$] )? )? v)?
+  # Width
+  (\d* | [*] (?: \d+ [$] )?)
+  # Precision
+  (?: [.] (\d+ | [*] (?: \d+ [$] )? ) )?
+  # Length (ignored, for compatibility with C)
+  (hh?|ll?|[Lzjtq]|I(?:32|64)?)?
+  # Type
+  ([diuDUfFeEgGxXoOscpnbB])
+  |
+  # Literal % mark
+  %%
+  ///g
+
+# 32-bit numbers are internal ECMAScript limitation. In fact, you cannot
+# exactly represent 2 ** 64 in ECMAScript, so emulating it would be
+# mostly useless.
+errorMessage = "64-bit numbers aren't supported by sprint()!"
+intSizeTable =
+  h: 2
+  hh: 1
+  l: 4
+  ll: new RangeError errorMessage
+  L: 4
+  z: 4
+  j: 4
+  t: 4
+  I: 4
+  I32: 4
+  I64: new RangeError errorMessage
+  q: new RangeError errorMessage
+
 sprint = (string, values...) ->
   arrayObjects = ['[object Array]', '[object Arguments]']
 
@@ -7,27 +48,6 @@ sprint = (string, values...) ->
   # Detect values sent as array
   if toString.call(values[0]) in arrayObjects and values.length is 1
     values = values[0]
-
-  format = ///
-    %
-    # Argument number
-    (\d+[$])?
-    # Flags
-    ((?:[+\x20\-#0])*)
-    # Vector flag
-    ((?: [*] (?: \d+ [$] )? )? v)?
-    # Width
-    (\d* | [*] (?: \d+ [$] )?)
-    # Precision
-    (?: [.] (\d+ | [*] (?: \d+ [$] )? ) )?
-    # Length (ignored, for compatibility with C)
-    (?:hh?|ll?|[Lzjtq]|I(?:32|64)?)?
-    # Type
-    ([diuDUfFeEgGxXoOscpnbB])
-    |
-    # Literal % mark
-    %%
-    ///g
 
   i = -1
 
@@ -46,12 +66,26 @@ sprint = (string, values...) ->
       "#{new Array(length - string.length + 1).join joiner}#{string}"
 
   "#{string}".replace format, (string, matches...) ->
-    [argument, flags, vector, length, precision, type] = matches
+    [argument, flags, vector, length, precision, intSize, type] = matches
+    intSize ?= 'L'
 
     return '%' if string is '%%'
 
-    alignCharacter = if '0' in flags then '0' else ' '
     leftPad = '-' in flags
+    alignCharacter = if '0' in flags and not leftPad then '0' else ' '
+
+    abs = (int, signed = no) ->
+      # Special case to avoid processing in commonly used %d modifier
+      return parseInt int, 10 if intSize is 'L' and (int >= 0 or signed)
+
+      entry = intSizeTable[intSize]
+      throw entry if entry instanceof Error
+      bits = entry * 8
+      int = parseInt(int, 10) % Math.pow 2, bits
+      highValue = Math.pow(2, bits) - 1
+      if signed and int >= Math.pow 2, bits - 1
+        int = -Math.pow(2, bits) + int
+      if signed then int else int >>> 0
 
     toExponential = ->
       argument = (+argument).toExponential(precision)
@@ -61,9 +95,6 @@ sprint = (string, values...) ->
         padString string, 3, 0
 
     padInteger = (string) ->
-      if leftPad
-        alignCharacter = ' '
-
       # Special casing
       if +string is 0 and +precision is 0
         ''
@@ -125,9 +156,9 @@ sprint = (string, values...) ->
     result = for argument in arguments
       argument = switch type
         when 'd', 'i', 'D'
-          padInteger parseInt argument, 10
+          padInteger abs argument, yes
         when 'u', 'U'
-          padInteger(parseInt argument, 10) >>> 0
+          padInteger abs argument
         when 'f', 'F'
           argument = (+argument).toFixed(precision).toLowerCase()
           # Dot shouldn't be added if argument is NaN or Infinity
@@ -148,13 +179,13 @@ sprint = (string, values...) ->
             toExponential().replace(/[.]?0+e/, 'e')
         when 'x', 'X'
           prefix = if special and +argument isnt 0 then '0x' else ''
-          "#{prefix}#{padInteger (+argument).toString 16}"
+          "#{prefix}#{padInteger abs(argument).toString 16}"
         when 'b', 'B'
           prefix = if special and +argument isnt 0 then '0b' else ''
-          "#{prefix}#{padInteger (+argument).toString 2}"
+          "#{prefix}#{padInteger abs(argument).toString 2}"
         when 'o', 'O'
           prefix = if special then '0' else ''
-          "#{prefix}#{padInteger (+argument).toString 8}"
+          "#{prefix}#{padInteger abs(argument).toString 8}"
         when 's'
           if defaultPrecision
             argument
@@ -162,6 +193,8 @@ sprint = (string, values...) ->
             argument.substr 0, precision
         when 'c'
           String.fromCharCode argument
+        else
+          throw new Exception "Unrecognized %type (?). Shouldn't happen."
 
       argument = "#{argument}"
 
