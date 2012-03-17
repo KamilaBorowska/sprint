@@ -1,3 +1,6 @@
+?????????? v0.3.0-next
+  * Sprint now works with CoffeeLint
+
 2012-03-17 v0.3.0
   * Added CHANGELOG (this file)
   * Fixed unsigned integers. Hexadecimal, octal and binary now always work

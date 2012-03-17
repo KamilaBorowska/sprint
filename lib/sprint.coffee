@@ -168,7 +168,8 @@ sprint = (string, values...) ->
         when 'e', 'E'
           toExponential()
         when 'g', 'G'
-          if +argument is 0 or 0.0001 <= Math.abs(argument) < Math.pow(10, precision)
+          arg = Math.abs argument
+          if +arg is 0 or 0.0001 <= Math.abs(arg) < Math.pow(10, precision)
             # Precision doesn't include magical dot
             argument = "#{argument}".substr 0, +precision + 1
             if special
