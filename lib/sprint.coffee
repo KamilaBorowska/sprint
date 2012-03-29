@@ -12,7 +12,7 @@ format = ///
   (\d* | [*] (?: \d+ [$] )?)
   # Precision
   (?: [.] (\d+ | [*] (?: \d+ [$] )? ) )?
-  # Length (ignored, for compatibility with C)
+  # Length
   (hh?|ll?|[Lzjtq]|I(?:32|64)?)?
   # Type
   ([diuDUfFeEgGxXoOscpnbB])
