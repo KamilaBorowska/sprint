@@ -171,7 +171,7 @@ sprint = (string, values...) ->
           arg = Math.abs argument
           if +arg is 0 or 0.0001 <= Math.abs(arg) < Math.pow(10, precision)
             # Precision doesn't include magical dot
-            argument = "#{argument}".substr 0, +precision + 1
+            argument = "#{argument}".substring 0, +precision + 1
             if special
               argument.replace /[.]?$/, '.'
             else
@@ -191,7 +191,7 @@ sprint = (string, values...) ->
           if defaultPrecision
             argument
           else
-            argument.substr 0, precision
+            argument.substring 0, precision
         when 'c'
           String.fromCharCode argument
         else
