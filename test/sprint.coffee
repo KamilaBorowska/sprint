@@ -101,7 +101,7 @@ test '%.0e %#.0e', 3.55, 3.55, '4e+000 4.e+000',
      'Exponential floating dot'
 test '%#e', NaN, 'nan',
      'NaN constant in exponential notation.'
-test '%e', 0.1234567E-101, '1.234567e-102',
+test '%e', 0.1234567e-101, '1.234567e-102',
      'Very small numbers.'
 test '%g %g', 3, 3.14, '3 3.14',
      '%g format'
@@ -130,11 +130,11 @@ test '%.3X', 11, '00B',
 test '%X', -1, 'FFFFFFFF',
      'Negative numbers'
 # Octal is intentionally used in those two tests
-test '%o %O', 0755, 0312, '755 312',
+test '%o %O', 0o755, 0o312, '755 312',
      'Octal numbers'
-test '%#o %#O', 0123, 012345671234567, '0123 012345671234567',
+test '%#o %#O', 0o123, 0o12345671234567, '0123 012345671234567',
      'Octal numbers with prefixes'
-test '%4o %4.3o', 022, 022, '  22  022',
+test '%4o %4.3o', 0o22, 0o22, '  22  022',
      'Octal precision'
 # End of intentional octal numbers
 test '%b %B', 255, 256, '11111111 100000000',

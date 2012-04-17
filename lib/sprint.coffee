@@ -148,12 +148,12 @@ sprint = (string, values...) ->
 
     special = '#' in flags
 
-    arguments = if vector
+    args = if vector
       letter.charCodeAt 0 for letter in argument
     else
       [argument]
 
-    result = for argument in arguments
+    result = for argument in args
       argument = switch type
         when 'd', 'i', 'D'
           padInteger abs argument, yes
