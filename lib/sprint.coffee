@@ -2,23 +2,25 @@
 # every time it is used.
 format = ///
   %
-  # Argument number
-  (\d+[$])?
-  # Flags
-  ((?:[+\x20\-#0])*)
-  # Vector flag
-  ((?: [*] (?: \d+ [$] )? )? v)?
-  # Width
-  (\d* | [*] (?: \d+ [$] )?)
-  # Precision
-  (?: [.] (\d+ | [*] (?: \d+ [$] )? ) )?
-  # Length
-  (hh?|ll?|[Lzjtq]|I(?:32|64)?)?
-  # Type
-  ([diuDUfFeEgGxXoOscpnbB])
+  (?:
+    # Simply %
+    %
   |
-  # Literal % mark
-  %%
+    # Argument number
+    (\d+[$])?
+    # Flags
+    ((?:[+\x20\-#0])*)
+    # Vector flag
+    ((?: [*] (?: \d+ [$] )? )? v)?
+    # Width
+    (\d* | [*] (?: \d+ [$] )?)
+    # Precision
+    (?: [.] (\d+ | [*] (?: \d+ [$] )? ) )?
+    # Length
+    (hh?|ll?|[Lzjtq]|I(?:32|64)?)?
+    # Type
+    ([diuDUfFeEgGxXoOscpnbB])
+  )
   ///g
 
 # 32-bit numbers are internal ECMAScript limitation. In fact, you cannot
@@ -74,18 +76,18 @@ sprint = (string, values...) ->
     leftPad = '-' in flags
     alignCharacter = if '0' in flags and not leftPad then '0' else ' '
 
-    abs = (int, signed = no) ->
+    abs = (number, signed = no) ->
       # Special case to avoid processing in commonly used %d modifier
-      return parseInt int, 10 if intSize is 'L' and (int >= 0 or signed)
+      return parseInt number, 10 if intSize is 'L' and (number >= 0 or signed)
 
       entry = intSizeTable[intSize]
       throw entry if entry instanceof Error
       bits = entry * 8
-      int = parseInt(int, 10) % Math.pow 2, bits
+      number = parseInt(number, 10) % Math.pow 2, bits
       highValue = Math.pow(2, bits) - 1
-      if signed and int >= Math.pow 2, bits - 1
-        int = -Math.pow(2, bits) + int
-      if signed then int else int >>> 0
+      if signed and number >= Math.pow 2, bits - 1
+        number = -Math.pow(2, bits) + number
+      if signed then number else number >>> 0
 
     toExponential = ->
       argument = (+argument).toExponential(precision)
