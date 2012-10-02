@@ -1,5 +1,7 @@
-?????????? v0.3.0-next
+2012-10-02 v0.3.1
   * Sprint now works with CoffeeLint
+  * Added Python style %r modifier
+  * The replace function doesn't use ... anymore.
 
 2012-03-17 v0.3.0
   * Added CHANGELOG (this file)

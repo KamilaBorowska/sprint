@@ -19,7 +19,7 @@ format = ///
     # Length
     (hh?|ll?|[Lzjtq]|I(?:32|64)?)?
     # Type
-    ([diuDUfFeEgGxXoOscpnbB])
+    ([diuDUfFeEgGxXoOscpnbBr])
   )
   ///g
 
@@ -49,7 +49,7 @@ sprint = (string, values...) ->
 
   # Detect values sent as array
   if toString.call(values[0]) in arrayObjects and values.length is 1
-    values = values[0]
+    values = dearrayified = values[0]
 
   i = -1
 
@@ -67,8 +67,8 @@ sprint = (string, values...) ->
     else
       "#{new Array(length - string.length + 1).join joiner}#{string}"
 
-  "#{string}".replace format, (string, matches...) ->
-    [argument, flags, vector, length, precision, intSize, type] = matches
+  "#{string}".replace format, (string, argument, flags, vector, length,
+                               precision, intSize, type) ->
     intSize ?= 'L'
 
     return '%' if string is '%%'
@@ -146,7 +146,7 @@ sprint = (string, values...) ->
       if 1 / argument is -Infinity
         argument = '-0'
 
-    argument = if argument? then "#{argument}" else ''
+    argument = if argument? then argument else ''
 
     special = '#' in flags
 
@@ -189,6 +189,14 @@ sprint = (string, values...) ->
         when 'o', 'O'
           prefix = if special then '0' else ''
           "#{prefix}#{padInteger abs(argument).toString 8}"
+        when 'r'
+          if dearrayified and i is 0
+            argument = dearrayified
+          argument = JSON.stringify argument
+          if defaultPrecision
+            argument
+          else
+            argument.substring 0, precision
         when 's'
           if defaultPrecision
             argument

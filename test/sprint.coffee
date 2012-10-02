@@ -27,6 +27,10 @@ test '%%%%', '%%',
      '%% should be changed to %'
 test '%s %s', ['a', 'b'], 'a b',
      'Array with sprint()'
+test '%r', ['a', 'b'], '["a","b"]',
+     'Representation'
+test '<%r>', a: 'b', '<{"a":"b"}>',
+     'Object representation'
 test '%d', 404, '404',
      '%d format'
 test '%2$d %1$d', 1, 2, '2 1',
