@@ -6,17 +6,7 @@
   "homepage": "https://github.com/GlitchMr/sprint",
   "keywords": [
     "sprintf",
-    "format",
-    "snprintf",
-    "printf",
-    "fprintf",
-    "vprintf",
-    "vfprintf",
-    "vsprintf",
-    "vsnprintf",
-    "vasprintf",
-    "print",
-    "echo"
+    "format"
   ],
   "repository": {
     "type": "git",
