@@ -22,7 +22,7 @@ In addition, following non-standard features are supported:
   times or displayed in different order. It's not in C99, but it's POSIX
   entension, so support for it is already common.
 * `%b` and `%B` - a binary number
-* `%D`, `%U`, `%O` - practially their lowercase variants. Inserted in this
+* `%D`, `%U`, `%O` - practially their uppercase variants. Inserted in this
   list just because of their usage in Perl's `printf()` implementation.
 * `%v` - vectors (from Perl implementation of `sprintf()`)
 
