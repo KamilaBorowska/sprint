@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/GlitchMr/sprint.png?branch=master)](http://travis-ci.org/GlitchMr/sprint)
+[![Build Status](https://secure.travis-ci.org/xfix/sprint.png?branch=master)](http://travis-ci.org/xfix/sprint)
 
 `sprint` is implementation of `sprintf` function from C++. If it is ran in
 Node.js envirnoment then it's used as module, otherwise module inserts
