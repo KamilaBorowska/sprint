@@ -1,16 +1,16 @@
 {
-  "author": "Konrad Borowski <glitchmr@myopera.com> (http://glitchmr.github.io/)",
+  "author": "Konrad Borowski <x.fix@o2.pl>",
   "name": "sprint",
   "description": "Complex sprintf() implementation",
   "version": "v0.3.1",
-  "homepage": "https://github.com/GlitchMr/sprint",
+  "homepage": "https://github.com/xfix/sprint",
   "keywords": [
     "sprintf",
     "format"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/GlitchMr/sprint.git"
+    "url": "git://github.com/xfix/sprint.git"
   },
   "main": "./lib/sprint",
   "directories": {
@@ -25,11 +25,11 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/GlitchMr/sprint/raw/master/LICENSE"
+      "url": "http://github.com/xfix/sprint/raw/master/LICENSE"
     }
   ],
   "bugs": {
-    "url": "https://github.com/GlitchMr/sprint/issues"
+    "url": "https://github.com/xfix/sprint/issues"
   },
   "scripts": {
     "test": "node test/sprint"
