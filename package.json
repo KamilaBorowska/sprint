@@ -6,6 +6,7 @@
   "homepage": "https://github.com/xfix/sprint",
   "keywords": [
     "sprintf",
+    "printf",
     "format"
   ],
   "repository": {
