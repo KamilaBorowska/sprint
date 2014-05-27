@@ -36,7 +36,7 @@ languages.
 * http://en.wikipedia.org/wiki/Printf#Format_placeholders
 
 If certain feature doesn't exist and you think it should exist, feel free to
-[make issue](https://github.com/GlitchMr/sprint/issues) about it. Unless it's
+[make issue](https://github.com/xfix/sprint/issues) about it. Unless it's
 impossible to implement it, you can expect it in next major release.
 
 And last thing before I will end this `README` file, have fun!
